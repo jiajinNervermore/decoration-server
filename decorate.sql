@@ -73,6 +73,13 @@ INSERT INTO dec_newest(nid,descs,pic) VALUES
 (NULL,'Quisque varius, nibh ac feugiat interdum, libero massa laoreet tellus, nec congue lorem arcu a nunc. Praesent quis felis eget.','images/e1.jpg'),
 (NULL,'Quisque varius, nibh ac feugiat interdum, libero massa laoreet tellus, nec congue lorem arcu a nunc. Praesent quis felis eget.','images/e2.jpg'),
 (NULL,'Quisque varius, nibh ac feugiat interdum, libero massa laoreet tellus, nec congue lorem arcu a nunc. Praesent quis felis eget.','images/e3.jpg');
+-- 关于我们页面展示图片
+CREATE TABLE dec_aboutpic(
+  aid INT PRIMARY KEY AUTO_INCREMENT,
+  pics VARCHAR(128) NOT NULL
+);
+INSERT INTO dec_aboutpic(aid,pics) VALUES
+(NULL,'{lg:"images/a1.jpg",ms:"images/a2.jpg"}');
 -- 团队
 CREATE TABLE dec_team(
   tid INT PRIMARY KEY AUTO_INCREMENT,
@@ -129,33 +136,39 @@ INSERT INTO dec_choose(cid,title,decs) VALUES
 -- 厨房和浴室
 CREATE TABLE dec_kitchen_bath(
   kid INT PRIMARY KEY AUTO_INCREMENT,
-  pic VARCHAR(32)
+  pic VARCHAR(32),
+  galId SMALLINT NOT NULL,
+  fTime VARCHAR(13)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- 卧室
+-- 客厅
 CREATE TABLE dec_livingroom(
   lid INT PRIMARY KEY AUTO_INCREMENT,
-  pic VARCHAR(32)
+  pic VARCHAR(32),
+  galId SMALLINT NOT NULL,
+  fTime VARCHAR(13)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- 卧室
 CREATE TABLE dec_bedroom(
   bid INT PRIMARY KEY AUTO_INCREMENT,
-  pic VARCHAR(32)
+  pic VARCHAR(32),
+  galId SMALLINT NOT NULL,
+  fTime VARCHAR(13)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO dec_kitchen_bath(kid,pic) VALUES
-(NULL,'images/g3.jpg'),
-(NULL,'images/g4.jpg'),
-(NULL,'images/g5.jpg'),
-(NULL,'images/g3.jpg'),
-(NULL,'images/s2.jpg'),
-(NULL,'images/s6.jpg');
-INSERT INTO dec_livingroom(lid,pic) VALUES
-(null,'images/g1.jpg'),
-(null,'images/g7.jpg'),
-(null,'images/g8.jpg'),
-(null,'images/g1.jpg'),
-(null,'images/s8.jpg');
-INSERT INTO dec_bedroom(bid,pic) VALUES
-(null,'images/g10.jpg'),
-(null,'images/g11.jpg'),
-(null,'images/g10.jpg'),
-(null,'images/s4.jpg');
+INSERT INTO dec_kitchen_bath(kid,pic,galId,fTime) VALUES
+(NULL,'images/g3.jpg',1,'1586780450210'),
+(NULL,'images/g4.jpg',1,'1586780450220'),
+(NULL,'images/g5.jpg',1,'1586780450230'),
+(NULL,'images/g3.jpg',1,'1586780450240'),
+(NULL,'images/s2.jpg',1,'1586780450250'),
+(NULL,'images/s6.jpg',1,'1586780450290');
+INSERT INTO dec_livingroom(lid,pic,galId,fTime) VALUES
+(null,'images/g1.jpg',2,'1586780450190'),
+(null,'images/g7.jpg',2,'1586780450290'),
+(null,'images/g8.jpg',2,'1586780450390'),
+(null,'images/g1.jpg',2,'1586780450490'),
+(null,'images/s8.jpg',2,'1586780450590');
+INSERT INTO dec_bedroom(bid,pic,galId,fTime) VALUES
+(null,'images/g10.jpg',3,'1586780451290'),
+(null,'images/g11.jpg',3,'1586780452290'),
+(null,'images/g10.jpg',3,'1586780453290'),
+(null,'images/s4.jpg',3,'1586780450490');
