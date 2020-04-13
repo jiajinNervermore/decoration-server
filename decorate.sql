@@ -1,7 +1,7 @@
 
-DROP DATABASE IF exists decotate;
-CREATE DATABASE decotate charset=utf8;
-USE decotate;
+DROP DATABASE IF exists decorate;
+CREATE DATABASE decorate charset=utf8;
+USE decorate;
 CREATE TABLE dec_background (
   bid INT PRIMARY KEY AUTO_INCREMENT,
   pic VARCHAR(64) NOT NULL 

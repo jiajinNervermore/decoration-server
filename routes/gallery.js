@@ -1,5 +1,5 @@
 const express = require('express');
-const query = requrie('./query');
+const query = require('./query.js');
 let router = express.Router();
 module.exports = router;
 router.get('/gallery',(req,res,next)=>{
@@ -32,10 +32,10 @@ router.get('/gallery',(req,res,next)=>{
   }
 })
 //单独查询厨房与浴室的数据
-router.get('/livingroom',(req,res,next)=>{
-  let kid = req.body.kid;
-  let sql = 'SELECT lid,pic,galId,fTime FROM dec_livingroom';
-  query(sql,kid,(err,result)=>{
+router.get('/kitchen',(req,res,next)=>{
+  // let kid = req.body.kid;
+  let sql = 'SELECT kid,pic,galId,fTime FROM dec_kitchen_bath';
+  query(sql,(err,result)=>{
     if(err){
       next(err)
       return
@@ -44,10 +44,10 @@ router.get('/livingroom',(req,res,next)=>{
   })
 })
 //单独查询客厅的数据
-router.get('/bedroom',(req,res,next)=>{
-  let kid = req.body.kid;
+router.get('/livingroom',(req,res,next)=>{
+  // let kid = req.body.kid;
   let sql = 'SELECT lid,pic,galId,fTime FROM dec_livingroom';
-  query(sql,kid,(err,result)=>{
+  query(sql,(err,result)=>{
     if(err){
       next(err)
       return
@@ -56,10 +56,10 @@ router.get('/bedroom',(req,res,next)=>{
   })
 })
 //单独查询卧室的数据
-router.get('/kitchen',(req,res,next)=>{
-  let kid = req.body.kid;
+router.get('/bedroom',(req,res,next)=>{
+  // let kid = req.body.kid;
   let sql = 'SELECT bid,pic,galId,fTime FROM dec_bedroom';
-  query(sql,kid,(err,result)=>{
+  query(sql,(err,result)=>{
     if(err){
       next(err)
       return

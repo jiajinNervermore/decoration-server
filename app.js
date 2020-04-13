@@ -46,7 +46,7 @@ server.listen(port, ()=>{
 	console.log('Server Listening on PORT: ' + port)
 })
 // 2.异常处理中间件 —— 处理路由执行过程中出现的所有错误
-app.use((err, req, res, next)=>{		//第一个形参是err的中间件就是“错误处理中间件”
+server.use((err, req, res, next)=>{		//第一个形参是err的中间件就是“错误处理中间件”
 	res.status(500)						//修改响应消息状态码
 	let output = {
 		code: 500,

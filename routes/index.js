@@ -1,6 +1,6 @@
 const express = require('express');
-const query = requrie('./query');
 let router = express.Router();
+const query = require('./query.js');
 module.exports = router;
 router.get('/index', (req, res, next) => {
   var result = {}
