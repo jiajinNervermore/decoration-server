@@ -10,6 +10,10 @@ const cors = require('cors')
 const session = require("express-session")
 //创建web服务器
 let server = express()
+server.use(cors({
+  origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
+  credentials: true
+}))
 
 //引入路由模块
 
@@ -22,10 +26,8 @@ server.use(about)
 server.use(gallery)
 server.use(services)
 //配置跨域模块
-server.use(cors({
-  origin: ["http://127.0.0.1:8080", "http://localhost:8080"],
-  credentials: true
-}))
+
+
 //指定静态资源目录 public
 server.use(express.static("public"));
 server.use(express.urlencoded({ extended: false }));
@@ -53,5 +55,6 @@ server.use((err, req, res, next)=>{		//第一个形参是err的中间件就是�
 		msg: 'Error occoured during server running',
 		err: err
 	}
+	// res.set('Access-Control-Allow-Orign','*')
 	res.send(output)
 })

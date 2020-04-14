@@ -31,39 +31,47 @@ router.get('/gallery',(req,res,next)=>{
     return
   }
 })
-//单独查询厨房与浴室的数据
-router.get('/kitchen',(req,res,next)=>{
-  // let kid = req.body.kid;
-  let sql = 'SELECT kid,pic,galId,fTime FROM dec_kitchen_bath';
-  query(sql,(err,result)=>{
-    if(err){
-      next(err)
-      return
+router.post('/room', (req, res, next) => {
+  let galId = req.body.galId;
+  if (!galId) {
+    let output = {
+      code: 401,
+      msg: 'galId required'
     }
-    res.send(result)
-  })
-})
-//单独查询客厅的数据
-router.get('/livingroom',(req,res,next)=>{
-  // let kid = req.body.kid;
-  let sql = 'SELECT lid,pic,galId,fTime FROM dec_livingroom';
-  query(sql,(err,result)=>{
-    if(err){
-      next(err)
-      return
-    }
-    res.send(result)
-  })
-})
-//单独查询卧室的数据
-router.get('/bedroom',(req,res,next)=>{
-  // let kid = req.body.kid;
-  let sql = 'SELECT bid,pic,galId,fTime FROM dec_bedroom';
-  query(sql,(err,result)=>{
-    if(err){
-      next(err)
-      return
-    }
-    res.send(result)
-  })
+    res.send(output)
+    return
+  }
+  if (galId == 1) {
+    //单独查询厨房与浴室的数据
+    let sql = 'SELECT kid,pic,galId,fTime FROM dec_kitchen_bath';
+    query(sql, (err, result) => {
+      if (err) {
+        next(err)
+        return
+      }
+      res.send(result)
+    })
+  }
+  if (galId == 2) {
+    //单独查询客厅的数据
+    let sql = 'SELECT lid,pic,galId,fTime FROM dec_livingroom';
+    query(sql, (err, result) => {
+      if (err) {
+        next(err)
+        return
+      }
+      res.send(result)
+    })
+  }
+  if (galId == 3) {
+    //单独查询卧室的数据
+    let sql = 'SELECT bid,pic,galId,fTime FROM dec_bedroom';
+    query(sql, (err, result) => {
+      if (err) {
+        next(err)
+        return
+      }
+      res.send(result)
+    })
+  }
 })

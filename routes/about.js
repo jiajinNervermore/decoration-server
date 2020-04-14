@@ -1,7 +1,9 @@
 const express = require('express');
 const query = require('./query.js');
 let router = express.Router();
+let toJson = require('../apis/toJson')
 module.exports = router;
+
 router.get('/about',(req,res,next)=>{
   var result = {}
   // 获取画廊
@@ -17,9 +19,17 @@ router.get('/about',(req,res,next)=>{
     (async function () {
       var result1 = await Promise.all([
         query(sql1).then(res => {
+          let pics = {}
+          pics = toJson(res[0].pics)
+          // console.log(pics,typeof(pics))
+          res[0].pics = pics
           result.aboutpic = res
         }),
         query(sql2).then(res => {
+          let pics1 = {}
+          pics1 = toJson(res[0].pics)
+          // console.log(pics,typeof(pics))
+          res[0].pics = pics1
           result.company = res
         }),
         query(sql3).then(res => {
