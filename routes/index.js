@@ -38,6 +38,7 @@ router.get('/index', (req, res, next) => {
           result.newest = res
         })
       ])
+      // res.set('Access-Control-Allow-Orign','*')
       res.send(result)
     })()
 

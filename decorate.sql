@@ -115,7 +115,7 @@ INSERT INTO dec_company(cid,uname,pics,decs,title,addr,wechat,qq,phone,email,wei
 (NULL,'春晓室内设计工作室','{Furniture:"images/f1.jpg",talkarea:"images/a2.jpg",livingRoom:"images/a1.jpg"}',"我们拥有国内顶尖的设计团队，以其“全案设计”的服务模式实力领航高端装饰设计市场。原色云全案设计是指满足客户在别墅装修中的所有设计需求，为客户提供一站式的设计服务，包括户型解析、功能布局、风格定位、资金规划、图纸预算、软装配饰、家具选购、主材产品搭配、设备选购和园林设计的全方位设计过程。全案设计能很好地解除业主在装修中遇到的一系列的麻烦，实现业主心中理想的装修效果。它不仅是单一地为客户进行室内设计，还包括材料设计、配饰设计、园林改造设计、设备系统设计、智能家居设计、风水规划和环保设计等，综合地为客户提供全面细致的服务。",'非凡品位,独享专属空间设计','重庆市渝北新南路168号龙湖moco3栋10-13','13912345678','578166455','13912345678','578166455@qq.com','chunxiao@sina.com');
 CREATE TABLE dec_services(
   id INT PRIMARY KEY AUTO_INCREMENT,
-  works VARCHAR(1048),
+  works VARCHAR(2048),
   services VARCHAR(1048)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

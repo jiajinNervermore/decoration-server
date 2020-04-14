@@ -23,9 +23,9 @@ server.use(gallery)
 server.use(services)
 //配置跨域模块
 server.use(cors({
-  origin: ["http://127.0.0.1:8080", "http://localhost:8080"],
-  credentials: true
-}))
+	origin:['http://127.0.0.1:8080','http://localhost:8080'],
+	 credentials:true //修改Access-Control-Allow-Credentials:true 允许客户端请求携带身份认证信息 
+}))	//设置运行客户端跨域请求相关的响应消息头部 —— TODO：此处未完结
 //指定静态资源目录 public
 server.use(express.static("public"));
 server.use(express.urlencoded({ extended: false }));
