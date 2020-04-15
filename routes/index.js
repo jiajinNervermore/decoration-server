@@ -29,10 +29,10 @@ router.get('/index', (req, res, next) => {
           result.classical = res
         }),
         query(sql4).then(res => {
-          result.feedback = res
+          result.interiors = res
         }),
         query(sql5).then(res => {
-          result.background = res
+          result.feedback = res
         }),
         query(sql6).then(res => {
           result.newest = res

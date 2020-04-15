@@ -8,9 +8,16 @@ const history = require("connect-history-api-fallback")
 const cors = require('cors')
 //引入session模块
 const session = require("express-session")
+
 //创建web服务器
 let server = express()
-
+server.use(cors({
+  origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
+  credentials: true
+}))
+// 1.请求主体的处理中间件
+let bodyParser = require('body-parser')
+server.use(bodyParser.json())	//处理请求主体中的JSON数据，保存到req.body属性中
 //引入路由模块
 
 var index = require("./routes/index");
@@ -21,11 +28,7 @@ server.use(index)
 server.use(about)
 server.use(gallery)
 server.use(services)
-//配置跨域模块
-server.use(cors({
-	origin:['http://127.0.0.1:8080','http://localhost:8080'],
-	 credentials:true //修改Access-Control-Allow-Credentials:true 允许客户端请求携带身份认证信息 
-}))	//设置运行客户端跨域请求相关的响应消息头部 —— TODO：此处未完结
+
 //指定静态资源目录 public
 server.use(express.static("public"));
 server.use(express.urlencoded({ extended: false }));
@@ -53,5 +56,6 @@ server.use((err, req, res, next)=>{		//第一个形参是err的中间件就是�
 		msg: 'Error occoured during server running',
 		err: err
 	}
+	// res.set('Access-Control-Allow-Orign','*')
 	res.send(output)
 })
