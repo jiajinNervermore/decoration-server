@@ -2,6 +2,8 @@ const express = require('express');
 const query = require('./query.js');
 let router = express.Router();
 module.exports = router;
+
+
 router.get('/gallery', (req, res, next) => {
   var result = {}
   // 获取画廊厨房和浴室页面展示信息
@@ -32,7 +34,9 @@ router.get('/gallery', (req, res, next) => {
   }
 })
 router.post('/room', (req, res, next) => {
+  
   let galId = req.body.galId;
+  
   if (!galId) {
     let output = {
       code: 401,

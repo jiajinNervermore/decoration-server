@@ -8,43 +8,43 @@ const history = require("connect-history-api-fallback")
 const cors = require('cors')
 //引入session模块
 const session = require("express-session")
-//创建web服务器
-let server = express()
-server.use(cors({
-  origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
-  credentials: true
-}))
-
-//引入路由模块
-
-var index = require("./routes/index");
-var about = require('./routes/about')
-var gallery = require('./routes/gallery')
-var services = require('./routes/services')
-server.use(index)
-server.use(about)
-server.use(gallery)
-server.use(services)
-//配置跨域模块
-<<<<<<< HEAD
-
-
-=======
-server.use(cors({
-	origin:['http://127.0.0.1:8080','http://localhost:8080'],
-	 credentials:true //修改Access-Control-Allow-Credentials:true 允许客户端请求携带身份认证信息 
-}))	//设置运行客户端跨域请求相关的响应消息头部 —— TODO：此处未完结
->>>>>>> 523f22690d1cba488481df49797e253a16738653
-//指定静态资源目录 public
-server.use(express.static("public"));
-server.use(express.urlencoded({ extended: false }));
 //配置session对象
+let server = express()
 server.use(session({
   secret: "128位安全字符串",//加密条件
   cookie: { maxAge: 60 * 1000 * 30 },//过期时间ms
   resave: true,//每次请求更新数据
   saveUninitialized: true,//保存初始化数据
 }));
+//创建web服务器
+
+server.use(cors({
+  origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
+  credentials: true
+}))
+// 1.请求主体的处理中间件
+let bodyParser = require('body-parser')
+server.use(bodyParser.json())	//处理请求主体中的JSON数据，保存到req.body属性中
+//引入路由模块
+
+var index = require("./routes/index");
+var about = require('./routes/about')
+var gallery = require('./routes/gallery')
+var services = require('./routes/services')
+const user = require('./routes/user.js')
+var message = require('./routes/message')
+server.use(index)
+server.use(about)
+server.use(gallery)
+server.use(services)
+server.use(message)
+server.use('/user',user)
+
+
+//指定静态资源目录 public
+server.use(express.static("public"));
+server.use(express.urlencoded({ extended: false }));
+
 //挂载路由到服务器上
 
 //注册history

@@ -115,11 +115,7 @@ INSERT INTO dec_company(cid,uname,pics,decs,title,addr,wechat,qq,phone,email,wei
 (NULL,'春晓室内设计工作室','{Furniture:"images/f1.jpg",talkarea:"images/a2.jpg",livingRoom:"images/a1.jpg"}',"我们拥有国内顶尖的设计团队，以其“全案设计”的服务模式实力领航高端装饰设计市场。原色云全案设计是指满足客户在别墅装修中的所有设计需求，为客户提供一站式的设计服务，包括户型解析、功能布局、风格定位、资金规划、图纸预算、软装配饰、家具选购、主材产品搭配、设备选购和园林设计的全方位设计过程。全案设计能很好地解除业主在装修中遇到的一系列的麻烦，实现业主心中理想的装修效果。它不仅是单一地为客户进行室内设计，还包括材料设计、配饰设计、园林改造设计、设备系统设计、智能家居设计、风水规划和环保设计等，综合地为客户提供全面细致的服务。",'非凡品位,独享专属空间设计','重庆市渝北新南路168号龙湖moco3栋10-13','13912345678','578166455','13912345678','578166455@qq.com','chunxiao@sina.com');
 CREATE TABLE dec_services(
   id INT PRIMARY KEY AUTO_INCREMENT,
-<<<<<<< HEAD
   works VARCHAR(10000),
-=======
-  works VARCHAR(2048),
->>>>>>> 523f22690d1cba488481df49797e253a16738653
   services VARCHAR(1048)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -176,3 +172,36 @@ INSERT INTO dec_bedroom(bid,pic,galId,fTime) VALUES
 (null,'images/g11.jpg',3,'1586780452290'),
 (null,'images/g10.jpg',3,'1586780453290'),
 (null,'images/s4.jpg',3,'1586780450490');
+-- 创建内部用户表
+CREATE TABLE dec_root(
+  rid INT PRIMARY KEY AUTO_INCREMENT,
+  sign VARCHAR(5),
+  uname VARCHAR(16) NOT NULL,
+  upwd VARCHAR(16) NOT NULL,
+  avatar VARCHAR(32) ,
+  email VARCHAR(32),
+  phone VARCHAR(11),
+  dep VARCHAR(10),
+  position VARCHAR(10),
+  fTime VARCHAR(13)
+);
+INSERT INTO dec_root VALUES(NULL,'admin','jiajin','123456','','135123456@qq.com','13212345678','董事会','董事长','1586967423767');
+-- 创建用户表
+CREATE TABLE dec_user(
+  uid INT PRIMARY KEY AUTO_INCREMENT,
+  uname VARCHAR(16) NOT NULL,
+  upwd VARCHAR(16) NOT NULL,
+  avatar VARCHAR(32) ,
+  email VARCHAR(32),
+  phone VARCHAR(11),
+  fTime VARCHAR(13)
+);
+-- 创建留言信息表
+CREATE TABLE dec_message(
+  mid INT PRIMARY KEY AUTO_INCREMENT,
+  fromuid INT NOT NULL,
+  touid INT ,
+  mes VARCHAR(128) NOT NULL,
+  fTime VARCHAR(13),
+  files VARCHAR(512)
+);
