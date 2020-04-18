@@ -10,23 +10,24 @@ const cors = require('cors')
 const session = require("express-session")
 //配置session对象
 let server = express()
-server.use(session({
-  secret: "128位安全字符串",//加密条件
-  cookie: { maxAge: 60 * 1000 * 30 },//过期时间ms
-  resave: true,//每次请求更新数据
-  saveUninitialized: true,//保存初始化数据
-}));
+
 //创建web服务器
 
+
+// 1.请求主体的处理中间件
+let bodyParser = require('body-parser')
+server.use(bodyParser.json())	//处理请求主体中的JSON数据，保存到req.body属性中
 server.use(cors({
   origin: ['http://127.0.0.1:8080', 'http://localhost:8080'],
   credentials: true
 }))
-// 1.请求主体的处理中间件
-let bodyParser = require('body-parser')
-server.use(bodyParser.json())	//处理请求主体中的JSON数据，保存到req.body属性中
 //引入路由模块
-
+server.use(session({
+  secret: "decorationsecret123",//加密条件
+  // cookie: { maxAge: 60 * 1000 * 30 },//过期时间ms
+	saveUninitialized: true,//保存初始化数据
+	resave: true,//每次请求更新数据
+}));
 var index = require("./routes/index");
 var about = require('./routes/about')
 var gallery = require('./routes/gallery')

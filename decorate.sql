@@ -178,7 +178,7 @@ CREATE TABLE dec_root(
   sign VARCHAR(5),
   uname VARCHAR(16) NOT NULL,
   upwd VARCHAR(16) NOT NULL,
-  avatar VARCHAR(32) ,
+  avatar VARCHAR(128) ,
   email VARCHAR(32),
   phone VARCHAR(11),
   dep VARCHAR(10),
@@ -191,17 +191,29 @@ CREATE TABLE dec_user(
   uid INT PRIMARY KEY AUTO_INCREMENT,
   uname VARCHAR(16) NOT NULL,
   upwd VARCHAR(16) NOT NULL,
-  avatar VARCHAR(32) ,
+  avatar VARCHAR(128) ,
   email VARCHAR(32),
   phone VARCHAR(11),
   fTime VARCHAR(13)
 );
+INSERT INTO dec_user VALUES(NULL,'jiajin123','Ljj123456','','135123456@qq.com','13212345678','1586967423767');
+INSERT INTO dec_user VALUES(NULL,'jiajin1234','Ljj123','','135123456@qq.com','13212345678','1586967423767');
+INSERT INTO dec_user VALUES(NULL,'jiajin12345','Ljj123','','135123456@qq.com','13212345678','1586967423767');
+INSERT INTO dec_user VALUES(NULL,'jiajin123456','Ljj123','','135123456@qq.com','13212345678','1586967423767');
 -- 创建留言信息表
 CREATE TABLE dec_message(
   mid INT PRIMARY KEY AUTO_INCREMENT,
   fromuid INT NOT NULL,
+  uname VARCHAR(16),
+  avatar VARCHAR(128),
   touid INT ,
   mes VARCHAR(128) NOT NULL,
   fTime VARCHAR(13),
   files VARCHAR(512)
 );
+INSERT INTO dec_message (fromuid,uname,avatar,touid,mes,fTime,files) VALUES
+(1,'jiajin123','','','小小年纪','1586970565409',''),
+(2,'jiajin1234','',1,'你才多大','1587121239974',''),
+(3,'jiajin1235','','','我是谁?我在哪儿?','1587121582323',''),
+(1,'jiajin1234','',1,'你在干嘛','1587121935857','')
+;

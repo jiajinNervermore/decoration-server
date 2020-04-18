@@ -7,7 +7,9 @@ const fs = require('fs')
 module.exports = router;
 router.post('/register', (req, res, next) => {
   //1.接收客户端提交的请求数据
+  // console.log(req.body)
   let sign = req.body.sign;
+  let fTime = Date.now()
   let uname = req.body.uname
   if (!uname) {
     let output = {
@@ -45,6 +47,7 @@ router.post('/register', (req, res, next) => {
     return
   }
   let captcha = req.body.captcha;
+  // console.log('需要进行比对的服务器端验证码: ', req.session.registerCaptcha)
   if (!captcha) {
     let output = {
       code: 404,
@@ -53,7 +56,7 @@ router.post('/register', (req, res, next) => {
     res.send(output)
     return
   } else if (captcha.toLowerCase() != req.session.registerCaptcha) {
-    console.log(captcha,req.session.registerCaptcha)
+    // console.log(captcha,req.session.registerCaptcha)
     let output = {
       code: 405,
       msg: 'captcha error'
@@ -79,8 +82,8 @@ router.post('/register', (req, res, next) => {
       return
     }
     if (!sign) {
-      var sql2 = "INSERT INTO dec_user(uname,upwd,phone,email) VALUES(?,?,?,?)"
-      pool.query(sql2, [uname, upwd, phone, email], (err, result) => {
+      var sql2 = "INSERT INTO dec_user(uname,upwd,phone,email,fTime) VALUES(?,?,?,?,?)"
+      pool.query(sql2, [uname, upwd, phone, email,fTime], (err, result) => {
         if (err) {
           next(err)
           return
@@ -113,7 +116,32 @@ router.post('/register', (req, res, next) => {
   })
 
 })
-
+router.post('/query',(req,res,next)=>{
+  // console.log(req.body)
+  let uid = req.body.uid
+  let sql = 'select * from dec_user where uid=?'
+  pool.query(sql,uid,(err,result)=>{
+    if(err){
+      // next(err)
+      throw err
+      return 
+    }
+    if(result.length>0){
+      let output = {
+        code : 200,
+        msg : 'succ',
+        data:result[0]
+      }
+      res.send(output)
+    }else{
+      let output = {
+        code : 401,
+        msg : 'failed'
+      }
+      res.send(output)
+    }
+  })
+})
 router.post('/login', (req, res, next) => {
   //1.读取客户端提交的请求数据 
   let sign = req.body.sign
@@ -166,11 +194,112 @@ router.post('/login', (req, res, next) => {
   })
   //3.向客户端输出响应结果
 })
+router.post('/update', (req, res, next) => {
+  
+  //1.接收客户端提交的请求数据
+  let sign = req.body.sign;
+  let avatar = req.body.avatar;
+  let uid = req.body.uid;
+  if(!uid){
+    let output = {
+      code:406,
+      msg: 'uid required'
+    }
+    res.send(output)
+    return
+  }
+  let uname = req.body.uname
+  if (!uname) {
+    let output = {
+      code: 401,
+      msg: 'uname required'
+    }
+    res.send(output)
+    return
+  }
+  let upwd = req.body.upwd
+  if (!upwd) {
+    let output = {
+      code: 402,
+      msg: 'upwd required'
+    }
+    res.send(output)
+    return
+  }
+  let email = req.body.email
+  if(!email){
+    let output = {
+      code: 405,
+      msg: 'email required'
+    }
+    res.send(output)
+    return 
+  }
+  let phone = req.body.phone
+  if (!phone) {
+    let output = {
+      code: 403,
+      msg: 'phone required'
+    }
+    res.send(output)
+    return
+  }
+  //2.执行数据库插入操作
+ 
+
+  let sql1 = 'SELECT * FROM dec_user WHERE uid=?'  //查询uid否已经存在了
+  pool.query(sql1, uid,(err, result) => {
+    if (err) {
+      next(err)
+      return
+    }
+    if (result.length == 0) {	//根据客户端提交的uname和phone查询到相关记录
+      let output = {		//uname或phone已被占用，则不再继续执行插入操作
+        code: 400,
+        msg: 'uid required 请重新登录'
+      }
+      res.send(output)
+      return
+    }
+    if (!sign) {
+      var sql2 = "UPDATE dec_user SET upwd=?,avatar=?,phone=?,email=? WHERE uid=?"
+      pool.query(sql2, [ upwd, avatar,phone, email,uid], (err, result) => {
+        if (err) {
+          next(err)
+          return
+        }
+        //3.向客户端输出响应消息
+        let output = {
+          code: 200,
+          msg: 'update succ'		//新插入的用户在数据库中的自增编号
+        }
+        res.send(output)
+      })
+    } else {
+      var sql2 = "UPDATE dec_root SET upwd=?,avatar=?,phone=?,email=? WHERE uid=?"
+      pool.query(sql2, [upwd,avatar, phone, email,uid], (err, result) => {
+        if (err) {
+          next(err)
+          return
+        }
+        //3.向客户端输出响应消息
+        let output = {
+          code: 200,
+          msg: 'update succ',
+          uid: result.insertId		//新插入的用户在数据库中的自增编号
+        }
+        res.send(output)
+      })
+    }
+
+  })
+
+})
 router.get('/check_uname', (req, res, next) => {
   //1.读取客户端提交的请求数据——服务器端验证
   
   let uname = req.query.uname
-  console.log(uname)
+  // console.log(uname)
   if (!uname) {				//如果客户端未提交uname
     let output = {
       code: 400,
@@ -212,7 +341,7 @@ router.get('/check_uname', (req, res, next) => {
 router.get('/check_phone', (req, res, next) => {
   //1.读取客户端提交的请求数据——服务器端验证
   let phone = req.query.phone
-  console.log(phone)
+  // console.log(phone)
   if (!phone) {				//如果客户端未提交uname
     let output = {
       code: 400,
@@ -260,10 +389,10 @@ router.get('/register/captcha', (req, res, next) => {
     background: '#c1eebd'
   }
   let captcha = svgCaptcha.create(options);
-  console.log(captcha,req.session)
+  // console.log(captcha,req.session)
   // 1.在服务器端会话中存储此时生成的验证码文本
   req.session.registerCaptcha = captcha.text.toLowerCase();
-  console.log('刚刚生成的服务器端验证码:',  req.session.registerCaptcha)
+  // console.log('刚刚生成的服务器端验证码:',  req.session.registerCaptcha)
   // 2. 向客户端输出此验证码图片的内容
   res.type('svg')//修改 Content-Type : image/svg+xml
   res.send(captcha.data)
@@ -273,7 +402,7 @@ let upload = multer({
 })
 router.post('/upload/avatar', upload.single('avatar'), (req, res, next) => {
   //使用第三方中间件处理客户端上传的文件
-  console.log(req.body, req.file)//客户端提交的文本域/文件域
+  // console.log(req.body, req.file)//客户端提交的文本域/文件域
   //在req.file 属性中已经保存了客户端提交上来 的文件信息——保存在临时文件目录
   //把临时目录下的且没有后缀的文件转存到另一个有实际意义目录下
   let oldName = req.file.path
@@ -283,6 +412,7 @@ router.post('/upload/avatar', upload.single('avatar'), (req, res, next) => {
       next(err)
       return
     }
+    // console.log(1)
     let output = {
       code: 200,
       msg: 'upload succ',
@@ -291,10 +421,54 @@ router.post('/upload/avatar', upload.single('avatar'), (req, res, next) => {
     res.send(output)
   })
 })
+// 更改用户头像
+router.post('/update/avatar',(req,res,next)=>{
+  // console.log(req.body)
+  let uid = req.body.uid;
+  let avatar = req.body.avatar;
+  if(!uid){
+    let output = {
+      code:401,
+      msg:'uid required'
+    }
+    res.send(output)
+    return
+  }
+  if(!avatar){
+    let output = {
+      code:402,
+      msg:'avatar required'
+    }
+    res.send(output)
+    return
+  }
+  let sql = "UPDATE dec_user SET avatar=? WHERE uid=?"
+  pool.query(sql,[avatar,uid],(err,result)=>{
+    if(err){
+      // next(err)
+      // return
+      throw err
+    }
+    // console.log(result)
+    if(result.affectedRows>0){
+      let output = {
+        code:200,
+        msg :'update avatar succ'
+      }
+      res.send(output)
+    }else{
+      let output = {
+        code:402,
+        msg :'update avatar failed'
+      }
+      res.send(output)
+    }
+  })
+})
 // 生成一个新的随机文件名路径
 function genaerateNewFilePath(originalFileName) {
   // ./images/avatar +时间戳 +五位随机数+源文件后缀名
-  let path = './images/avatar/';
+  let path = './public/images/avatar/';
   path += Date.now();
   path += Math.floor(Math.random() * 90000 + 10000)
   let lastDotIndex = originalFileName.lastIndexOf(".")//原文件名中最后一个.的下标
