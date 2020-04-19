@@ -52,7 +52,7 @@ server.use(express.urlencoded({ extended: false }));
 server.use(history());
 //为服务器绑定监听端口 5050
 let port = 5050
-server.listen(port, ()=>{
+server.listen(port,'0.0.0.0', ()=>{
 	console.log('Server Listening on PORT: ' + port)
 })
 // 2.异常处理中间件 —— 处理路由执行过程中出现的所有错误
